@@ -1,0 +1,197 @@
+
+package org.usfirst.frc.team5144.robot;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class Robot extends IterativeRobot {
+	/**
+	 * CHANNELS
+	 */
+	//USB (number on the driver station)
+	final int joystickLeftChannel = 0;
+	final int joystickRightChannel = 1;
+	final int xboxControllerChannel = 2;
+	//ANALOG
+	
+	//DIGITAL
+	final int limitCamChannel = 0; //check
+	//MOTOR CONT.
+	final int leftFrontDriveChannel = 7; //check
+	final int leftRearDriveChannel = 8; //check
+	final int rightFrontDriveChannel = 1; //check
+	final int rightRearDriveChannel = 2; //check
+	final int frontLoaderChannel = 0; //check
+	final int backLoaderChannel = 3; //check
+	final int camLauncherChannel = 2; //check
+	
+	/**
+     * AUTO MODE
+     */
+	//Auto Mode Choice Creations
+	final String defaultAuto = "Default";
+    final String portAuto = "Portcullis";
+    final String chevalAuto = "Cheval de Frise";
+    final String moatAuto = "Moat";
+    final String rampAuto = "Ramparts";
+    final String drawAuto = "Drawbridge";
+    final String sallyAuto = "Sally Port";
+    final String rockAuto = "Rock Wall";
+    final String roughAuto = "Rough Terrain";
+    final String minAuto = "Auto Line";
+    final String testAuto = "Test Auto";
+    String autoSelected;
+    SendableChooser chooser;
+    Timer timer = new Timer(); //Create a timer for auto mode
+    
+    /**
+     * DRIVE
+     */
+    Talon leftFrontDrive = new Talon(leftFrontDriveChannel);
+    Talon leftRearDrive = new Talon(leftRearDriveChannel);
+    Talon rightFrontDrive = new Talon(rightFrontDriveChannel);
+    Talon rightRearDrive = new Talon(rightRearDriveChannel);
+    RobotDrive drive = new RobotDrive(leftFrontDrive, leftRearDrive, rightFrontDrive, rightRearDrive);
+    
+    /**
+     * RELAYS
+     */
+    Relay frontLoader = new Relay(frontLoaderChannel);
+    Relay backLoader = new Relay(backLoaderChannel);
+    Relay camLauncher = new Relay(camLauncherChannel);
+    
+    /**
+     *CONTROLS 
+     */
+    Joystick joystickLeft = new Joystick(joystickLeftChannel);
+    Joystick joystickRight = new Joystick(joystickRightChannel);
+    Joystick xboxController = new Joystick(xboxControllerChannel);
+    
+    /**
+     * DIGITAL INPUTS
+     */
+	DigitalInput limitCam = new DigitalInput(limitCamChannel);
+	boolean camOn = false;
+    
+    public void robotInit() {
+    	//auto choices
+    	chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", defaultAuto);
+        chooser.addObject("Portcullis", portAuto);
+        chooser.addObject("Cheval de Frise", chevalAuto);
+        chooser.addObject("Moat", moatAuto);
+        chooser.addObject("Ramparts", rampAuto);
+        chooser.addObject("Drawbridge", drawAuto);
+        chooser.addObject("Sally Port", sallyAuto);
+        chooser.addObject("Rock Wall", rockAuto);
+        chooser.addObject("Rough Terrain", roughAuto);
+        chooser.addObject("Auto Line", minAuto);
+        chooser.addObject("Test Auto", testAuto);
+        SmartDashboard.putData("Auto choices", chooser);
+    }
+    
+    public void autonomousInit() {
+    	autoSelected = (String) chooser.getSelected();
+		System.out.println("Auto selected: " + autoSelected);
+		timer.start(); //start the timer for auto mode
+    }
+
+    public void autonomousPeriodic() {
+    	//output the timer to the smartdashboard for testing
+    	SmartDashboard.putNumber("Time", timer.get());
+    	switch(autoSelected) {
+    	case portAuto: //NEEDS TESTING
+    		//Code to complete the Portcullis
+    		
+            break;
+    	case chevalAuto: //NEEDS TESTING
+    		//Code to complete the Cheval de Frise
+    		
+    		break;
+    	case moatAuto: //NEEDS TESTING
+    		//Code to complete the Moat
+    		
+    		break;
+    	case rampAuto: //NEEDS TESTING
+    		//Code to complete the Ramparts
+    		
+    		break;
+    	case drawAuto: //NEEDS TESTING
+    		//Code to complete the Drawbridge
+    		
+    		break;
+    	case sallyAuto: //NEEDS TESTING
+    		//Code to complete the Sallyport
+    		 
+    		break;
+    	case rockAuto: //NEEDS TESTING
+    		//Code to complete the Rock Wall
+    		
+    		break;
+    	case roughAuto: //NEEDS TESTING
+    		//Code to complete the Rough Terrain
+    		
+    		break;
+    	case minAuto: //NEEDS TESTING
+    		//Code to drive over the auto line at the start of the match
+    		//Auto line: a 2in wide line of green gaffers tape that is 12in from the edge of the mid line
+    		
+    		break;
+    	case testAuto: //FOR TESTING AUTO IDEAS
+    		//Space to test Auto concepts
+
+    		break;
+    	case defaultAuto:
+    	default:
+    		//The robot does nothing
+            break;
+    	}
+    }
+
+    public void teleopPeriodic() {
+    	//Add a negative before the axis to invert one of the sides if needed
+    	double joystickLeftY = joystickLeft.getY();
+    	double joystickRightY = joystickRight.getY();
+    	//Xbox inputs
+    	double xboxLT = xboxController.getRawAxis(2);
+    	double xboxRT = xboxController.getRawAxis(3);
+    	boolean xboxB = xboxController.getRawButton(2);
+    	
+    	//Create the drive and use the values of the Y-axis on both
+    	//of the joysticks for the drive
+    	drive.tankDrive(joystickLeftY, joystickRightY);
+    	
+    	//fire rotation of the outer wheels
+    	if(xboxRT >= .8 ){ //check the vlaue?
+        	frontLoader.set(Relay.Value.kForward); //check if inverted correctly
+        	backLoader.set(Relay.Value.kReverse); //check if inverted correctly
+    	}
+    	//intake rotation of the outer wheels
+    	if(xboxLT >= .8){ //check the value
+    		frontLoader.set(Relay.Value.kReverse); //check if inverted correctly
+    		backLoader.set(Relay.Value.kForward); //check if inverted correctly
+    	}
+    	
+    	if(xboxB == true && camOn == false){
+    		camLauncher.set(Relay.Value.kForward);
+    		camOn = true;
+    	}	
+    	if(limitCam.get() == true){
+    		camLauncher.set(Relay.Value.kOff);
+    		camOn = false;
+    	}
+    }
+    
+    public void testPeriodic() {
+    
+    }
+    
+}
