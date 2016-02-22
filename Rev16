@@ -156,18 +156,14 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	//Called then auto mode is started
     	autoSelected = (String) chooser.getSelected();
-		//System.out.println("Auto selected: " + autoSelected);
 		timer.start(); //Start the timer
     }
 
     public void autonomousPeriodic() {
     	//This function is called about every 20ms
-    	//Include a gyro to keep the robot straight?
-    	//Come up with a system of where the robot should be placed with respect of each of defenses (with an easy/consistent way for the drivers to remember)
     	/*for (double area : grip.getNumberArray("targets/area", new double[0])) {
             System.out.println("Got contour with area=" + area);
-        }
-        */
+        }*/
         switch(autoSelected) {
     	case portAuto: //NEEDS TESTING
     		//Code to complete the Portcullis
@@ -266,7 +262,7 @@ public class Robot extends IterativeRobot {
         //Reset the shooter talons
         shooterOut1.set(0);
         shooterOut2.set(0);
-    	  shooterIn.set(0.0);
+    	shooterIn.set(0.0);
     	
         //Pull the ball into the robot
     	ballIntake(xboxA, xboxB, xboxX, xboxY);
@@ -297,14 +293,13 @@ public class Robot extends IterativeRobot {
     }
     //Drive auto mode
     public void driveAuto(double time, double speed){
-    	if(timer.get() < time) {
+    	if(timer.get() < time)
     		Drive.arcadeDrive(speed, 0);
-    	}
     	if(timer.get() >= time)
     		Drive.arcadeDrive(0, 0);
     }
     //Drive and arm auto mode
-    public void armAuto(){
+    public void armAuto(double timeDrive, double speedDrive, double timeArm, double speedArm){
     	
     }
     //WILL FIX
